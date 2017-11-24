@@ -1,0 +1,7 @@
+numpy
+pandas
+
+conda create -n bamba_env python
+source activate bamba_env
+conda install numpy
+conda install pandas
