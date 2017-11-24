@@ -33,7 +33,7 @@ def action_standardize(input_file_path, output_file_path, verbose=False):
 
     if verbose:
         print('Reading point cloud...')
-    pcl = PointCloud(input_file_path)
+    pcl = PointCloud.from_file(input_file_path)
     if verbose:
         print('Finished reading point cloud.')
     if verbose:

@@ -15,10 +15,9 @@ def set_ax_aspect(ax, X, Y, Z):
     ax.set_ylim(mid_y - max_range, mid_y + max_range)
     ax.set_zlim(mid_z - max_range, mid_z + max_range)
 
-def plot_pcl(file_path, verbose=False):
-    pcl = PointCloud(file_path)
+def plot_pcl(pcl, window_title="", verbose=False):
     fig = plt.figure()
-    fig.canvas.set_window_title(file_path)
+    fig.canvas.set_window_title(window_title)
     ax = fig.gca(projection='3d')
     ax.scatter(pcl.vertices[:, 0], pcl.vertices[:, 1], pcl.vertices[:, 2], color="k", s=5)
     set_ax_aspect(ax, pcl.vertices[:, 0], pcl.vertices[:, 1], pcl.vertices[:, 2])
@@ -26,4 +25,8 @@ def plot_pcl(file_path, verbose=False):
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     plt.show()
+
+def plot_pcl_from_file(file_path, verbose=False):
+    pcl = PointCloud.from_file(file_path)
+    plot_pcl(pcl, window_title=file_path)
 

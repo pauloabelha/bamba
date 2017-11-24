@@ -2,8 +2,12 @@ import sys
 from optparse import OptionParser
 from standardize import action_standardize
 from plot_pcl import plot_pcl
+from plot_pcl import plot_pcl_from_file
+from pcl_info import print_pcl_info
+import superquadric as sq
 
-ACTION_LIST = ['standardize', 'plot']
+
+ACTION_LIST = ['standardize', 'plot', 'info', 'sample_superellipse']
 
 def parse_action(action_name):
     if action_name is None:
@@ -82,14 +86,14 @@ action_name = options.action_name
 
 batch_folder = parse_batch_folder(options.batch_folder)
 
-input_filename = parse_filename(options.input_filename)
-
-default_output_file_name = options.input_filename
-if options.output_filename == '':
-    output_filename = default_output_file_name
-else:
-    output_filename = options.output_filename
-output_filename = parse_filename(output_filename)
+if not action_name[0:len("sample_superellipse")] == "sample_superellipse":
+    input_filename = parse_filename(options.input_filename)
+    default_output_file_name = options.input_filename
+    if options.output_filename == '':
+        output_filename = default_output_file_name
+    else:
+        output_filename = options.output_filename
+    output_filename = parse_filename(output_filename)
 
 verbose = parse_verbose(options.verbose)
 
@@ -110,4 +114,13 @@ if action_name == 'standardize':
 if action_name == 'plot':
     if verbose:
         print('Input file: ' + input_filename)
-    plot_pcl(input_filename, verbose)
+    plot_pcl_from_file(input_filename, verbose)
+
+if action_name == 'info':
+    if verbose:
+        print('Input file: ' + input_filename)
+    print_pcl_info(input_filename)
+
+if action_name[0:len('sample_superellipse')] == 'sample_superellipse':
+    pcl = sq.superellipse(2, 1, 1)
+    plot_pcl(pcl, window_title="superellipse")
