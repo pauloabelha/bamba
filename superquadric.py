@@ -61,4 +61,35 @@ def sample_superellipse(a, b, eps1, D=False):
     pcl = np.hstack((pcl, pcl_z))
     return PointCloud(pcl)
 
+def update_u(b, eps1, u_prev, D):
+    return D / np.sqrt(((4*b*b)/(eps1*eps1)) * np.power(u_prev, (4/eps1)-2) + 1.0)
+
+def unif_sample_u(b, eps1, D):
+    max_iter = int(1e6)
+    us = np.array([0])
+    i = 0
+    while True:
+        if i > max_iter:
+            print("First theta sampling reach the maximum number of iterations " + str(max_iter))
+            raise 1
+        next_u = us[-1] + update_u(b, eps1, us[-1], D)
+        if next_u > 1:
+            break
+        us = np.append(us, [next_u])
+        i += 1
+    return us
+
+def sample_superparabola( a, b, eps1, D=False):
+    if not D:
+        D = max(a / b, b / a) / 100.0
+    us = unif_sample_u(b, eps1, D)
+    X = a * us
+    pcl_x = np.hstack((-X[1:][::-1], X))
+    Y = b * np.power(np.power(us, 2), 1/eps1)
+    pcl_y = np.hstack((Y[1:][::-1], Y))
+    pcl = np.transpose(np.vstack((pcl_x, pcl_y)))
+    pcl_z = np.zeros((pcl.shape[0], 1))
+    pcl = np.hstack((pcl, pcl_z))
+    return PointCloud(pcl)
+
 

@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="455e2829-a87a-4c04-82aa-7f3ea1d410a3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/bamba.iml" afterPath="$PROJECT_DIR$/.idea/bamba.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bamba.py" afterPath="$PROJECT_DIR$/bamba.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pcl_info.py" afterPath="$PROJECT_DIR$/pcl_info.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/superquadric.py" afterPath="$PROJECT_DIR$/superquadric.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,11 +18,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="bamba.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bamba.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bamba.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="140" column="46" lean-forward="true" selection-start-line="140" selection-start-column="46" selection-end-line="140" selection-end-column="46" />
+            <state relative-caret-position="18">
+              <caret line="129" column="17" lean-forward="false" selection-start-line="129" selection-start-column="17" selection-end-line="129" selection-end-column="17" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -34,35 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plot_pcl.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plot_pcl.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="15" column="53" lean-forward="true" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pcl_info.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pcl_info.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" column="21" lean-forward="true" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="superquadric.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="superquadric.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/superquadric.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="91">
-              <caret line="43" column="23" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="23" />
+            <state relative-caret-position="415">
+              <caret line="92" column="26" lean-forward="false" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -113,8 +85,8 @@
         <option value="$PROJECT_DIR$/standardize.py" />
         <option value="$PROJECT_DIR$/plot_pcl.py" />
         <option value="$PROJECT_DIR$/pcl_info.py" />
-        <option value="$PROJECT_DIR$/superquadric.py" />
         <option value="$PROJECT_DIR$/bamba.py" />
+        <option value="$PROJECT_DIR$/superquadric.py" />
       </list>
     </option>
   </component>
@@ -717,16 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plot_pcl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="53" lean-forward="true" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pcl_info.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -737,22 +699,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/superquadric.py">
+    <entry file="file://$PROJECT_DIR$/plot_pcl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="43" column="23" lean-forward="false" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="23" />
+        <state relative-caret-position="163">
+          <caret line="15" column="53" lean-forward="true" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bamba.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="140" column="46" lean-forward="true" selection-start-line="140" selection-start-column="46" selection-end-line="140" selection-end-column="46" />
+        <state relative-caret-position="18">
+          <caret line="129" column="17" lean-forward="false" selection-start-line="129" selection-start-column="17" selection-end-line="129" selection-end-column="17" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/superquadric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="92" column="26" lean-forward="false" selection-start-line="92" selection-start-column="26" selection-end-line="92" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>

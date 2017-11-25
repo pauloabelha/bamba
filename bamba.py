@@ -7,7 +7,8 @@ from pcl_info import print_pcl_info
 import superquadric as sq
 
 
-ACTION_LIST = ['standardize', 'plot', 'info', 'sample_superellipse']
+ACTION_LIST = ['standardize', 'plot', 'info', 'sample_superellipse', 'sample_superparabola']
+ACTIONS_THAT_REQUIRE_FILES = ['standardize', 'plot', 'info']
 
 def parse_action(action_name):
     if action_name is None:
@@ -89,7 +90,7 @@ action_name = options.action_name
 
 batch_folder = parse_batch_folder(options.batch_folder)
 
-if not action_name[0:len("sample_superellipse")] == "sample_superellipse":
+if action_name in ACTIONS_THAT_REQUIRE_FILES:
     input_filename = parse_filename(options.input_filename)
     default_output_file_name = options.input_filename
     if options.output_filename == '':
@@ -126,8 +127,7 @@ if action_name == 'info':
 
 if action_name[0:len('sample_superellipse')] == 'sample_superellipse':
     if len(options.params) == 0:
-        print("Warning: no params specified; sampling a unit circle")
-        print("PLease specify the superellipse three params as a csv string (e.g. -p 2,1,0.5)")
+        print("Please specify the superellipse three params as a csv string (e.g. -p 2,1,0.5)")
         sys.exit(1)
     else:
         se_params = options.params.split(",")
@@ -139,3 +139,18 @@ if action_name[0:len('sample_superellipse')] == 'sample_superellipse':
         eps1 = float(se_params[2])
     pcl = sq.sample_superellipse(a, b, eps1)
     plot_pcl(pcl, window_title="superellipse")
+
+if action_name[0:len('sample_superparabola')] == 'sample_superparabola':
+    if len(options.params) == 0:
+        print("Please specify the superparabola three params as a csv string (e.g. -p 2,1,0.5)")
+        sys.exit(1)
+    else:
+        sp_params = options.params.split(",")
+        if not len(sp_params) == 3:
+            print("Superparabola sampling requires a list of exactly three params: a, b and epsilon1")
+            sys.exit(1)
+        a = float(sp_params[0])
+        b = float(sp_params[1])
+        eps1 = float(sp_params[2])
+    pcl = sq.sample_superparabola( a, b, eps1)
+    plot_pcl(pcl, window_title="superparabola")
