@@ -41,7 +41,7 @@ def unif_sample_theta(a, b, eps1, D):
     thetas = np.append(thetas1, -thetas1 + np.pi/2)
     return thetas
 
-def superellipse(a, b, eps1, D=False):
+def sample_superellipse(a, b, eps1, D=False):
     if not D:
         D = max(a / b, b / a) / 100.0
     rot = np.identity(2)

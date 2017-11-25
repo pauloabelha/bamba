@@ -76,6 +76,9 @@ parser.add_option("-i", "--input", dest="input_filename",
 parser.add_option("-o", "--output", dest="output_filename",
                   action="store", default='',
                   help="PLY output point cloud file name")
+parser.add_option("-p", "--params", dest="params",
+                  action="store", default='',
+                  help="String containing a list of params (see manual)")
 parser.add_option("-v", "--verbose", dest="verbose",
                   help="output information to stdout (default is false)", metavar="VERBOSE")
 
@@ -122,5 +125,17 @@ if action_name == 'info':
     print_pcl_info(input_filename)
 
 if action_name[0:len('sample_superellipse')] == 'sample_superellipse':
-    pcl = sq.superellipse(2, 1, 1)
+    if len(options.params) == 0:
+        print("Warning: no params specified; sampling a unit circle")
+        print("PLease specify the superellipse three params as a csv string (e.g. -p 2,1,0.5)")
+        sys.exit(1)
+    else:
+        se_params = options.params.split(",")
+        if not len(se_params) == 3:
+            print("Superellipse sampling requires a list of exactly three params: a, b and epsilon1")
+            sys.exit(1)
+        a = float(se_params[0])
+        b = float(se_params[1])
+        eps1 = float(se_params[2])
+    pcl = sq.sample_superellipse(a, b, eps1)
     plot_pcl(pcl, window_title="superellipse")

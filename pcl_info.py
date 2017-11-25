@@ -2,7 +2,7 @@ from pcl.pointcloud import PointCloud
 import numpy as np
 
 def print_pcl_info(file_path):
-    pcl = PointCloud(file_path)
+    pcl = PointCloud.from_file(file_path)
     n_segms = np.unique(pcl.segm_ixs).shape[0]
     print("General:")
     _, bound_box_str = pcl.bound_box()
