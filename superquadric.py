@@ -136,7 +136,7 @@ def get_sq_vol_multiplier(lambda_sq):
     lambda_sq[0:3] = np.multiply(lambda_sq[0:3], vol_mult)
     return vol_mult, lambda_sq
 
-def sample_superparaboloid(lambda_sq, n_points=2000):
+def sample_superparaboloid(lambda_sq, n_points=5000):
     # max num of samples
     MAX_N_SAMPLES = int(1e4)
     # deal with thin SQs

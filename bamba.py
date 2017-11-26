@@ -178,5 +178,5 @@ if action_name == 'sample_superparaboloid':
         if not len(sp_params) == 14:
             print("Superparaboloid sampling requires a list of exactly 14 params")
             sys.exit(1)
-    pcl = sq.sample_superparaboloid([float(x) for x in sp_params], 2000)
-    plot_pcl(pcl, window_title="superparabola")
+    pcl = sq.sample_superparaboloid([float(x) for x in sp_params], 10000)
+    plot_pcl(pcl, window_title="superparabola", color='k')

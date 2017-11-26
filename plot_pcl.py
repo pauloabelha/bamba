@@ -15,11 +15,11 @@ def set_ax_aspect(ax, X, Y, Z):
     ax.set_ylim(mid_y - max_range, mid_y + max_range)
     ax.set_zlim(mid_z - max_range, mid_z + max_range)
 
-def plot_pcl(pcl, window_title="", verbose=False):
+def plot_pcl(pcl, window_title="", color='k', verbose=False):
     fig = plt.figure()
     fig.canvas.set_window_title(window_title)
     ax = fig.gca(projection='3d')
-    ax.scatter(pcl.vertices[:, 0], pcl.vertices[:, 1], pcl.vertices[:, 2], color="k", s=5)
+    ax.scatter(pcl.vertices[:, 0], pcl.vertices[:, 1], pcl.vertices[:, 2], color=color, s=5)
     set_ax_aspect(ax, pcl.vertices[:, 0], pcl.vertices[:, 1], pcl.vertices[:, 2])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
