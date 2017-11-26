@@ -137,20 +137,14 @@ def get_sq_vol_multiplier(lambda_sq):
     return vol_mult, lambda_sq
 
 def sample_superparaboloid(lambda_sq, n_points=2000):
-    # max number of points for pcl
-    MAX_N_PTS = int(1e6)
     # max num of samples
     MAX_N_SAMPLES = int(1e4)
-    # max number of cross sampling of angles(etas x omegas) - for memory issues
-    MAX_N_CROSS_ANGLES = MAX_N_PTS / 2
     # deal with thin SQs
     vol_mult, lambda_sq = get_sq_vol_multiplier(lambda_sq)
     # get parameters
-    a1, a2, a3, eps1, eps2, Kx, Ky, k_bend, eul1, eul2, eul3, posx, posy, poz\
-        = lambda_sq
+    a1, a2, a3, eps1, eps2, Kx, Ky, k_bend, eul1, eul2, eul3, posx, posy, poz = lambda_sq
     _, us = sample_superparabola(1, a3, eps1)
     _, omegas = sample_superellipse(a1, a2, eps2)
-    n_cross_angles = us.shape[0] * omegas.shape[0]
     us = np.random.choice(us, size=min(us.shape[0], MAX_N_SAMPLES), replace=False)
     us = us.reshape((us.shape[0], 1))
     omegas = np.random.choice(omegas, size=min(omegas.shape[0], MAX_N_SAMPLES), replace=False)
@@ -162,9 +156,16 @@ def sample_superparaboloid(lambda_sq, n_points=2000):
     Y = Y.reshape((Y.shape[0] * Y.shape[1], 1))
     Z = np.dot(2 * a3 * (np.power(np.power(us, 2), (1 / eps1)) - 1 / 2), np.ones((1, omegas.shape[1])))
     Z = Z.reshape((Z.shape[0] * Z.shape[1], 1))
+    # create pcl
     pcl_x = np.append(np.append(X, -X), np.append(X, -X))
     pcl_y = np.append(np.append(Y, Y), np.append(-Y, -Y))
     pcl_z = np.append(np.append(Z, Z), np.append(Z, Z))
     pcl = np.transpose(np.vstack((np.vstack((pcl_x, pcl_y)), pcl_z)))
-    print(pcl.shape)
+    pcl = pcl[np.random.choice(pcl.shape[0], n_points, replace=False), :]
+    # rotate and translate pcl
+    rot_mtx = my_linalg.get_eul_rot_mtx(lambda_sq[5:8])
+    rot_transl_mtx = my_linalg.get_rot_transl_mtx(rot_mtx, transl_vec=np.reshape(np.transpose(lambda_sq[-3:]), (3, 1)))
+    pcl = np.vstack((np.transpose(pcl), np.ones((1, pcl.shape[0]))))
+    pcl = np.transpose(np.dot(rot_transl_mtx, pcl))
+    pcl = pcl[:, 0:3]
     return PointCloud(pcl)
