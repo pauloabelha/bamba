@@ -1,6 +1,7 @@
 import numpy as np
 import my_linalg
 from pcl.pointcloud import PointCloud
+from my_linalg import signedpow
 
 # Based on [PiluFisher95] Pilu, Maurizio, and Robert B. Fisher.
 # �Equal-distance sampling of superellipse models.� DAI RESEARCH PAPER (1995)
@@ -59,7 +60,40 @@ def sample_superellipse(a, b, eps1, D=False):
     pcl = np.dot(pcl, rot)
     pcl_z = np.zeros((pcl.shape[0], 1))
     pcl = np.hstack((pcl, pcl_z))
-    return PointCloud(pcl)
+    return PointCloud(pcl), thetas
+
+def is_a_thin_SQ(lambda_sq):
+    # min proportion for considering a SQ thin
+    MIN_PROP_THIN_SQ = 0.01
+    scale_sort = np.sort(lambda_sq[0:3])
+    scale_sort_ixs = np.argsort(lambda_sq[0:3])
+    prop_thin = scale_sort[0] / scale_sort[2]
+    is_thin_SQ = prop_thin <= MIN_PROP_THIN_SQ
+    return is_thin_SQ, scale_sort, scale_sort_ixs, prop_thin
+
+# By Paulo Abelha
+#
+# Uniformly samples a superellipsoid
+# This function will approximate "thin" superellipsoids to be 2D)
+# A thin SQ is defined in terms of metric units (m)
+# A SQ is thin if its smallest scale over largest is smaller than 0.1
+# Inputs:
+#   lambda: 1x5 array with the parameters [a1,a2,a3,eps1,eps2]
+#   plot_fig: whether to plot
+#
+# Outputs:
+#   pcl: Nx3 array with the uniform point cloud
+#   etas: the u parameters for the superparabola
+#   omegas: the omega parameters for the superellipse
+def sample_superellipsoid(lambda_sq, n_points=2000):
+    # max number of points for pcl
+    MAX_N_PTS = int(1e7)
+    # max number of cross sampling of angles(etas x omegas) - for memory issues
+    MAX_N_CROSS_ANGLES = MAX_N_PTS / 2
+    # deal with thin SQs
+    is_thin_SQ, scale_sort, scale_sort_ixs, _ = is_a_thin_SQ(lambda_sq)
+
+
 
 def update_u(b, eps1, u_prev, D):
     return D / np.sqrt(((4*b*b)/(eps1*eps1)) * np.power(u_prev, (4/eps1)-2) + 1.0)
@@ -90,6 +124,47 @@ def sample_superparabola( a, b, eps1, D=False):
     pcl = np.transpose(np.vstack((pcl_x, pcl_y)))
     pcl_z = np.zeros((pcl.shape[0], 1))
     pcl = np.hstack((pcl, pcl_z))
+    return PointCloud(pcl), us
+
+def get_sq_vol_multiplier(lambda_sq):
+    # deal with SQs with a scale number less than 1
+    # this is too deal with arbitrarly small SQs and
+    # still being able to sample
+    vol_mult = 1
+    if lambda_sq[0] < 1 or lambda_sq[1] < 1 or lambda_sq[2] < 1:
+        vol_mult = 1.0 / np.min(lambda_sq[0:3])
+    lambda_sq[0:3] = np.multiply(lambda_sq[0:3], vol_mult)
+    return vol_mult, lambda_sq
+
+def sample_superparaboloid(lambda_sq, n_points=2000):
+    # max number of points for pcl
+    MAX_N_PTS = int(1e6)
+    # max num of samples
+    MAX_N_SAMPLES = int(1e4)
+    # max number of cross sampling of angles(etas x omegas) - for memory issues
+    MAX_N_CROSS_ANGLES = MAX_N_PTS / 2
+    # deal with thin SQs
+    vol_mult, lambda_sq = get_sq_vol_multiplier(lambda_sq)
+    # get parameters
+    a1, a2, a3, eps1, eps2, Kx, Ky, k_bend, eul1, eul2, eul3, posx, posy, poz\
+        = lambda_sq
+    _, us = sample_superparabola(1, a3, eps1)
+    _, omegas = sample_superellipse(a1, a2, eps2)
+    n_cross_angles = us.shape[0] * omegas.shape[0]
+    us = np.random.choice(us, size=min(us.shape[0], MAX_N_SAMPLES), replace=False)
+    us = us.reshape((us.shape[0], 1))
+    omegas = np.random.choice(omegas, size=min(omegas.shape[0], MAX_N_SAMPLES), replace=False)
+    omegas = omegas.reshape((1, min(omegas.shape[0], MAX_N_SAMPLES)))
+    # get vertices
+    X = a1 * np.dot(us, signedpow(np.cos(omegas), eps2))
+    X = X.reshape((X.shape[0] * X.shape[1], 1))
+    Y = a2 * us * signedpow(np.sin(omegas), eps2)
+    Y = Y.reshape((Y.shape[0] * Y.shape[1], 1))
+    Z = np.dot(2 * a3 * (np.power(np.power(us, 2), (1 / eps1)) - 1 / 2), np.ones((1, omegas.shape[1])))
+    Z = Z.reshape((Z.shape[0] * Z.shape[1], 1))
+    pcl_x = np.append(np.append(X, -X), np.append(X, -X))
+    pcl_y = np.append(np.append(Y, Y), np.append(-Y, -Y))
+    pcl_z = np.append(np.append(Z, Z), np.append(Z, Z))
+    pcl = np.transpose(np.vstack((np.vstack((pcl_x, pcl_y)), pcl_z)))
+    print(pcl.shape)
     return PointCloud(pcl)
-
-

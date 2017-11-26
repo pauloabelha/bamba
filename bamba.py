@@ -7,7 +7,9 @@ from pcl_info import print_pcl_info
 import superquadric as sq
 
 
-ACTION_LIST = ['standardize', 'plot', 'info', 'sample_superellipse', 'sample_superparabola']
+ACTION_LIST = ['standardize', 'plot', 'info',
+               'sample_superellipse', 'sample_superparabola', 'sample_superellipsoid',
+               'sample_superparaboloid']
 ACTIONS_THAT_REQUIRE_FILES = ['standardize', 'plot', 'info']
 
 def parse_action(action_name):
@@ -125,7 +127,7 @@ if action_name == 'info':
         print('Input file: ' + input_filename)
     print_pcl_info(input_filename)
 
-if action_name[0:len('sample_superellipse')] == 'sample_superellipse':
+if action_name == 'sample_superellipse':
     if len(options.params) == 0:
         print("Please specify the superellipse three params as a csv string (e.g. -p 2,1,0.5)")
         sys.exit(1)
@@ -140,7 +142,7 @@ if action_name[0:len('sample_superellipse')] == 'sample_superellipse':
     pcl = sq.sample_superellipse(a, b, eps1)
     plot_pcl(pcl, window_title="superellipse")
 
-if action_name[0:len('sample_superparabola')] == 'sample_superparabola':
+if action_name == 'sample_superparabola':
     if len(options.params) == 0:
         print("Please specify the superparabola three params as a csv string (e.g. -p 2,1,0.5)")
         sys.exit(1)
@@ -152,5 +154,29 @@ if action_name[0:len('sample_superparabola')] == 'sample_superparabola':
         a = float(sp_params[0])
         b = float(sp_params[1])
         eps1 = float(sp_params[2])
-    pcl = sq.sample_superparabola( a, b, eps1)
+    pcl = sq.sample_superparabola(a, b, eps1)
+    plot_pcl(pcl, window_title="superparabola")
+
+if action_name == 'sample_superellipsoid':
+    if len(options.params) == 0:
+        print("Please specify the superellipsoid's 5 params as a csv string (e.g. -p 1,2,3,0.1,1)")
+        sys.exit(1)
+    else:
+        se_params = options.params.split(",")
+        if not len(se_params) == 5:
+            print("Superellipsoid sampling requires a list of exactly five params: a, b, c, epsilon1 and epsilon2")
+            sys.exit(1)
+    pcl = sq.sample_superellipsoid([float(x) for x in se_params], 2000)
+    plot_pcl(pcl, window_title="superparabola")
+
+if action_name == 'sample_superparaboloid':
+    if len(options.params) == 0:
+        print("Please specify the Superparaboloid's 11 params as a csv string")
+        sys.exit(1)
+    else:
+        sp_params = options.params.split(",")
+        if not len(sp_params) == 14:
+            print("Superparaboloid sampling requires a list of exactly 14 params")
+            sys.exit(1)
+    pcl = sq.sample_superparaboloid([float(x) for x in sp_params], 2000)
     plot_pcl(pcl, window_title="superparabola")
